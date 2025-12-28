@@ -52,3 +52,4 @@ if __name__ == "__main__":
     # ✅ SÉCURISÉ : Debug désactivé en production
     debug_mode = os.getenv("FLASK_DEBUG", "False").lower() == "true"
     app.run(debug=debug_mode)
+#sb
