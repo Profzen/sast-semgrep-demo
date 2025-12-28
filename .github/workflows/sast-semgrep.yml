@@ -21,5 +21,31 @@ jobs:
         run: |
           pip install semgrep
 
-      - name: Run Semgrep SAST scan
-        run: semgrep --config=auto .
+      - name: Run Semgrep SAST
+        run: |
+          semgrep --config=semgrep-rules.yml --json --output=semgrep-report.json .
+        continue-on-error: true
+
+      - name: Générer rapport Markdown
+        if: always()
+        run: |
+          python generate_report.py
+
+      - name: Upload rapports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: semgrep-reports
+          path: |
+            semgrep-report.json
+            semgrep-report.md
+
+      - name: Vérifier vulnérabilités critiques
+        run: |
+          if [ -f semgrep-report.json ]; then
+            ERROR_COUNT=$(jq '[.results[] | select(.extra.severity == "ERROR")] | length' semgrep-report.json)
+            if [ "$ERROR_COUNT" -gt 0 ]; then
+              echo "❌ $ERROR_COUNT vulnérabilité(s) critique(s) détectée(s) !"
+              exit 1
+            fi
+          fi

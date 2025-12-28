@@ -1,7 +1,168 @@
 rules:
-  - id: sql-injection-demo
+  # ============================================
+  # INJECTION SQL
+  # ============================================
+  - id: sql-injection-string-formatting
     pattern: |
       execute("SELECT * FROM users WHERE username = '%s'" % $X)
-    message: SQL Injection détectée
+    message: |
+      SQL Injection détectée via formatage de chaîne (%).
+      Utilisez des requêtes paramétrées avec '?' ou des ORM.
     languages: [python]
     severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-89: SQL Injection"
+      owasp: "A03:2021 - Injection"
+
+  - id: sql-injection-fstring
+    pattern-either:
+      - pattern: |
+          execute(f"... {$VAR} ...")
+      - pattern: |
+          execute("..." + $VAR + "...")
+      - pattern: |
+          $CONN.execute("... " + $VAR)
+      - pattern: |
+          $CONN.execute(f"... {$VAR} ...")
+    message: |
+      SQL Injection via f-string ou concaténation détectée.
+      N'insérez JAMAIS des variables utilisateur directement dans les requêtes SQL.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-89: SQL Injection"
+
+  # ============================================
+  # INJECTION DE COMMANDES
+  # ============================================
+  - id: command-injection-os-system
+    pattern-either:
+      - pattern: os.system($CMD + $VAR)
+      - pattern: os.system(f"... {$VAR} ...")
+      - pattern: os.system("..." + $VAR + "...")
+    message: |
+      Injection de commande OS détectée avec os.system().
+      Utilisez subprocess avec une liste d'arguments ou validez strictement les entrées.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-78: OS Command Injection"
+      owasp: "A03:2021 - Injection"
+
+  - id: command-injection-subprocess
+    pattern-either:
+      - pattern: subprocess.call($CMD + $VAR, shell=True)
+      - pattern: subprocess.run(f"... {$VAR} ...", shell=True)
+      - pattern: subprocess.Popen("..." + $VAR, shell=True)
+    message: |
+      Injection de commande possible avec subprocess et shell=True.
+      Évitez shell=True ou utilisez shlex.quote() pour échapper les entrées.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-78: OS Command Injection"
+
+  # ============================================
+  # XSS (Cross-Site Scripting)
+  # ============================================
+  - id: flask-xss-render-template-string
+    pattern-either:
+      - pattern: return f"<$TAG>... {$VAR} ...</$TAG>"
+      - pattern: return "<...>" + $VAR + "</...>"
+      - pattern: render_template_string("..." + $VAR + "...")
+    message: |
+      Risque XSS détecté - injection HTML non échappée.
+      Utilisez render_template() avec Jinja2 qui échappe automatiquement,
+      ou utilisez escape() de markupsafe.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-79: Cross-site Scripting (XSS)"
+      owasp: "A03:2021 - Injection"
+
+  # ============================================
+  # CONFIGURATION DANGEREUSE
+  # ============================================
+  - id: flask-debug-mode
+    pattern: app.run(debug=True)
+    message: |
+      Mode DEBUG activé en production - DANGEREUX !
+      Le mode debug expose des informations sensibles et permet l'exécution de code.
+      Désactivez-le en production.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      cwe: "CWE-489: Active Debug Code"
+
+  - id: hardcoded-secret
+    pattern-either:
+      - pattern: SECRET_KEY = "..."
+      - pattern: API_KEY = "..."
+      - pattern: PASSWORD = "..."
+      - pattern: TOKEN = "..."
+    message: |
+      Secret potentiellement codé en dur détecté.
+      Utilisez des variables d'environnement ou un gestionnaire de secrets.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      cwe: "CWE-798: Use of Hard-coded Credentials"
+
+  # ============================================
+  # PATH TRAVERSAL
+  # ============================================
+  - id: path-traversal
+    pattern-either:
+      - pattern: open($USER_INPUT, ...)
+      - pattern: open(f".../{$VAR}", ...)
+      - pattern: open($PATH + $VAR, ...)
+    message: |
+      Risque de Path Traversal détecté.
+      Validez et normalisez les chemins avec os.path.abspath() et os.path.commonprefix().
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      cwe: "CWE-22: Path Traversal"
+
+  # ============================================
+  # DÉSÉRIALISATION DANGEREUSE
+  # ============================================
+  - id: unsafe-deserialization-pickle
+    pattern-either:
+      - pattern: pickle.loads($VAR)
+      - pattern: pickle.load($FILE)
+    message: |
+      Désérialisation dangereuse avec pickle détectée.
+      pickle.loads() peut exécuter du code arbitraire.
+      Utilisez JSON ou validez la source des données.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-502: Deserialization of Untrusted Data"
+
+  # ============================================
+  # GESTION DES ERREURS
+  # ============================================
+  - id: bare-except
+    pattern: |
+      try:
+        ...
+      except:
+        ...
+    message: |
+      Clause except trop large détectée.
+      Capturez des exceptions spécifiques pour éviter de masquer des erreurs critiques.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: best-practice
+
