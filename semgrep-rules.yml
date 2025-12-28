@@ -1,0 +1,7 @@
+rules:
+  - id: sql-injection-demo
+    pattern: |
+      execute("SELECT * FROM users WHERE username = '%s'" % $X)
+    message: SQL Injection détectée
+    languages: [python]
+    severity: ERROR
