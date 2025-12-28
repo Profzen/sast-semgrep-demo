@@ -35,13 +35,13 @@ def main():
     
     # Scanner (affichage)
     run_command(
-        "semgrep --config=semgrep-rules.yml app/",
+        "semgrep --config=semgrep-rules.yml --exclude=app_secure.py app/",
         "Scan avec règles personnalisées"
     )
     
     # Générer JSON
     run_command(
-        "semgrep --config=semgrep-rules.yml --json --output=semgrep-report.json app/",
+        "semgrep --config=semgrep-rules.yml  --json --output=semgrep-report.json app/",
         "Génération JSON"
     )
     

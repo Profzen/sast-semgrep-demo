@@ -450,12 +450,3 @@ semgrep --config=semgrep-rules.yml .
 
 ---
 
-## 💡 Conseils de Présentation
-
-1. **Commencer par l'impact** - Montrer des cas réels de failles célèbres
-2. **Démontrer visuellement** - Les gens retiennent mieux ce qu'ils voient
-3. **Garder un rythme dynamique** - Alterner théorie et pratique
-4. **Anticiper les questions** - Préparer des réponses concises
-5. **Finir sur une note positive** - Insister sur les bénéfices
-
-**Bonne présentation ! 🚀**

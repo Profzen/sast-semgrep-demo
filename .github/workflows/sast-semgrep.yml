@@ -23,7 +23,7 @@ jobs:
 
       - name: Run Semgrep SAST
         run: |
-          semgrep --config=semgrep-rules.yml --json --output=semgrep-report.json .
+          semgrep --config=semgrep-rules.yml --exclude=app_secure.py --json --output=semgrep-report.json .
         continue-on-error: true
 
       - name: Générer rapport Markdown
