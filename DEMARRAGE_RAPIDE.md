@@ -1,4 +1,4 @@
-# 🚀 Démarrage Rapide - SAST Semgrep
+#  Démarrage Rapide - SAST Semgrep
 
 ## Installation & Premier Scan
 
@@ -14,7 +14,7 @@ python run_demo.py
 
 ---
 
-## 📋 Commandes Essentielles
+## Commandes Essentielles
 
 ### Scanner le code
 ```bash
@@ -38,11 +38,11 @@ git commit -m "test: pipeline SAST"
 git push
 ```
 
-**⚠️ Le pipeline échouera** car le code contient 2 vulnérabilités ERROR !
+**Le pipeline échouera** car le code contient 2 vulnérabilités ERROR !
 
 ---
 
-## 📊 Fichiers Générés
+## Fichiers Générés
 
 Chaque scan crée **2 fichiers** :
 
@@ -53,7 +53,7 @@ Chaque scan crée **2 fichiers** :
 
 ---
 
-## 🔍 Vulnérabilités Détectées
+## Vulnérabilités Détectées
 
 Le code `app/app.py` contient :
 
@@ -64,7 +64,7 @@ Le code `app/app.py` contient :
 
 ---
 
-## 🎯 Structure du Projet
+##  Structure du Projet
 
 ```
 sast-semgrep-demo/
@@ -82,7 +82,7 @@ sast-semgrep-demo/
 
 ---
 
-## 🎤 Pour la Présentation
+## Pour la Présentation
 
 Voir **[GUIDE_PRESENTATION.md](GUIDE_PRESENTATION.md)** pour le plan détaillé.
 
@@ -95,7 +95,7 @@ Voir **[GUIDE_PRESENTATION.md](GUIDE_PRESENTATION.md)** pour le plan détaillé.
 
 ---
 
-## 🆘 Aide Rapide
+##  Aide Rapide
 
 ```bash
 # Problème d'encodage Windows
@@ -104,10 +104,16 @@ $env:PYTHONIOENCODING="utf-8"
 # Vérifier version Semgrep
 semgrep --version
 
-# Scanner sans git
+# Scanner general
+semgrep --config=auto 
+
+# scanner pour python
+semgrep --config=p/python --config=p/flask 
+
+# scanner avec nos regles
 semgrep --config=semgrep-rules.yml --no-git-ignore app/
 ```
 
 ---
 
-**📚 Ressources** : [Semgrep Docs](https://semgrep.dev/docs/) | [OWASP Top 10](https://owasp.org/Top10/)
+** Ressources** : [Semgrep Docs](https://semgrep.dev/docs/) | [OWASP Top 10](https://owasp.org/Top10/)
