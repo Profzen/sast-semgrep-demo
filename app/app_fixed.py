@@ -11,7 +11,7 @@ import os
 
 app = Flask(__name__)
 
-# ✅ SÉCURISÉ : SQL Injection - Requête paramétrée
+#  SÉCURISÉ : SQL Injection - Requête paramétrée
 @app.route("/login")
 def login():
     user = request.args.get("user")
@@ -23,7 +23,7 @@ def login():
         return "Login OK"
     return "User not found"
 
-# ✅ SÉCURISÉ : Command Injection - subprocess avec liste
+#  SÉCURISÉ : Command Injection - subprocess avec liste
 @app.route("/ping")
 def ping():
     ip = request.args.get("ip")
@@ -41,7 +41,7 @@ def ping():
     except subprocess.TimeoutExpired:
         return "Ping timeout"
 
-# ✅ SÉCURISÉ : XSS - Jinja2 avec échappement automatique
+#  SÉCURISÉ : XSS - Jinja2 avec échappement automatique
 @app.route("/hello")
 def hello():
     name = request.args.get("name", "Guest")
@@ -49,7 +49,7 @@ def hello():
     return render_template_string(template, name=name)
 
 if __name__ == "__main__":
-    # ✅ SÉCURISÉ : Debug désactivé en production
+    #  SÉCURISÉ : Debug désactivé en production
     debug_mode = os.getenv("FLASK_DEBUG", "False").lower() == "true"
     app.run(debug=debug_mode)
 #sb
