@@ -86,7 +86,7 @@ sast-semgrep-demo/
 
 Voir **[GUIDE_PRESENTATION.md](GUIDE_PRESENTATION.md)** pour le plan détaillé.
 
-**Démo rapide (5 min)** :
+**Démo rapide ** :
 1. Montrer `app/app.py` (code vulnérable)
 2. Lancer `python run_demo.py`
 3. Montrer `semgrep-report.md`
@@ -95,7 +95,7 @@ Voir **[GUIDE_PRESENTATION.md](GUIDE_PRESENTATION.md)** pour le plan détaillé.
 
 ---
 
-##  Aide Rapide
+##  Commandes Rapides
 
 ```bash
 # Problème d'encodage Windows

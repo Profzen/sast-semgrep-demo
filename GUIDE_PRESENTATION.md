@@ -1,8 +1,8 @@
 #  Guide de Présentation - Boucle de Rétroaction SAST
 
-## ⏱ Plan (15 minutes)
 
-### 1. Introduction (3 min)
+### 1. Intro
+E:\zen\sast-semgrep-demo\app
 **Problème** : Les vulnérabilités détectées tard coûtent cher  
 **Solution** : SAST automatisé avec boucle de rétroaction
 
@@ -21,11 +21,11 @@ Code → Push → Scan SAST → Vulnérabilités ?
 - Feedback immédiat
 - Traçabilité
 
-### 3. Démonstration (7 min)
+### 3. Démonstration 
 
 #### Étape 1 : Code vulnérable (1 min)
 ```python
-# ❌ Command Injection - app/app.py ligne 20
+#  Command Injection - app/app.py ligne 20
 ip = request.args.get("ip")
 os.system("ping " + ip)  # DANGEREUX !
 ```
@@ -54,11 +54,11 @@ Montrer `semgrep-report.md` :
 git push
 ```
 
-**Résultat** : ❌ Pipeline échoue → Code bloqué
+**Résultat** :  Pipeline échoue → Code bloqué
 
 #### Étape 5 : Correction (1 min)
 ```python
-# ✅ Version sécurisée - app/app_secure.py
+#  Version sécurisée - app/app_secure.py
 import subprocess
 subprocess.run(["ping", ip], check=True)
 ```
@@ -87,7 +87,7 @@ subprocess.run(["ping", ip], check=True)
 1. Code vulnérable
 2. Scan local + rapports
 3. Push → pipeline échoue
-4. Montrer corrections dans `app/app_secure.py`
+4. corrections dans `app/app_secure.py`
 5. Expliquer la boucle de rétroaction
 
 ---
@@ -103,8 +103,7 @@ subprocess.run(["ping", ip], check=True)
 | Secrets hardcodés | WARNING  | ⚠️ Alerte       |
 
 
-### 2. Concept de Boucle de Rétroaction (5 minutes)
-
+### 2. Concept de Boucle de Rétroaction 
 **Définition :**
 Une boucle de rétroaction SAST permet de :
 1. **Détecter** automatiquement les vulnérabilités dans le code
@@ -138,14 +137,14 @@ Retour au début du cycle
 
 ---
 
-### 3. Démonstration Pratique (10 minutes)
+### 3. Démonstration
 
 #### Étape 1 : Présenter le code vulnérable
 
 **Montrer le fichier [app/app.py](app/app.py) :**
 
 ```python
-# ❌ VULNÉRABILITÉ 1 : SQL Injection
+#  VULNÉRABILITÉ 1 : SQL Injection
 @app.route("/login")
 def login():
     user = request.args.get("user")
@@ -159,7 +158,7 @@ def login():
 - → Accès non autorisé !
 
 ```python
-# ❌ VULNÉRABILITÉ 2 : Command Injection
+#  VULNÉRABILITÉ 2 : Command Injection
 @app.route("/ping")
 def ping():
     ip = request.args.get("ip")
@@ -171,7 +170,7 @@ def ping():
 - → Exécution de commandes arbitraires !
 
 ```python
-# ❌ VULNÉRABILITÉ 3 : XSS
+#  VULNÉRABILITÉ 3 : XSS
 @app.route("/hello")
 def hello():
     name = request.args.get("name")
@@ -185,12 +184,6 @@ def hello():
 ---
 
 
-## Slides Recommandés
-
-1. **Slide 4** - Solution : Boucle de rétroaction SAST
-2. **Slide 5** - Schéma du cycle complet
-3. **Slide 6** - Démonstration (screen sharing)
-4. **Slide 7** - Résultats et métriques
 
 
 
