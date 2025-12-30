@@ -85,7 +85,7 @@ def welcome():
 def greet():
     msg = request.args.get("msg")
     return render_template_string("<p>Message: " + msg + "</p>")
-    #pc
+    #pc2
 
 #  Désérialisation dangereuse - pickle.loads
 @app.route("/load_data")
